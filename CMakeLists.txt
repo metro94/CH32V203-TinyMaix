@@ -11,7 +11,7 @@ set(CMAKE_OBJCOPY ${TOOLPATH}objcopy)
 set(CMAKE_OBJDUMP ${TOOLPATH}objdump)
 set(SIZE ${TOOLPATH}size)
 
-project(CH32V307-TinyMaix C CXX ASM)
+project(CH32V203-TinyMaix C CXX ASM)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 99)
 
@@ -20,7 +20,7 @@ add_compile_options(-fmessage-length=0 -fsigned-char -ffunction-sections -fdata-
 add_link_options(-nostartfiles -Xlinker --gc-sections -Wl,--print-memory-usage -Wl,-Map,${PROJECT_NAME}.map --specs=nano.specs --specs=nosys.specs)
 add_link_options(-T ${CMAKE_SOURCE_DIR}/Ld/Link.ld)
 
-add_compile_options(-O3)
+add_compile_options(-Os)
 # add_compile_options(-Wall)
 
 
@@ -35,8 +35,8 @@ file(GLOB_RECURSE SOURCES
                 "APP/*.c"
                 "Core/core_riscv.c" 
                 "Debug/debug.c"
-                "Peripheral/SRC/*.c" 
-                "Startup/startup_ch32v30x_D8C.S"
+                "Peripheral/src/*.c" 
+                "Startup/startup_ch32v20x_D6.S"
                 )
 
 add_subdirectory(TinyMaix)

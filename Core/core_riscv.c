@@ -1,12 +1,12 @@
 /********************************** (C) COPYRIGHT  *******************************
-* File Name          : core_riscv.c
-* Author             : WCH
-* Version            : V1.0.0
-* Date               : 2021/06/06
-* Description        : RISC-V Core Peripheral Access Layer Source File
-* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
-* SPDX-License-Identifier: Apache-2.0
-*******************************************************************************/
+ * File Name          : core_riscv.c
+ * Author             : WCH
+ * Version            : V1.0.0
+ * Date               : 2021/06/06
+ * Description        : RISC-V Core Peripheral Access Layer Source File
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * SPDX-License-Identifier: Apache-2.0
+ *******************************************************************************/
 #include <stdint.h>
 
 /* define compiler specific symbols */
@@ -29,92 +29,6 @@
 #endif
 
 
-/*********************************************************************
- * @fn      __get_FFLAGS
- *
- * @brief   Return the Floating-Point Accrued Exceptions
- *
- * @return  fflags value
- */
-uint32_t __get_FFLAGS(void)
-{
-  uint32_t result;
-
-  __ASM volatile ( "csrr %0," "fflags" : "=r" (result) );
-  return (result);
-}
-
-/*********************************************************************
- * @fn      __set_FFLAGS
- *
- * @brief   Set the Floating-Point Accrued Exceptions
- *
- * @param   value  - set FFLAGS value
- *
- * @return  none
- */
-void __set_FFLAGS(uint32_t value)
-{
-  __ASM volatile ("csrw fflags, %0" : : "r" (value) );
-}
-
-/*********************************************************************
- * @fn      __get_FRM
- *
- * @brief   Return the Floating-Point Dynamic Rounding Mode
- *
- * @return  frm value
- */
-uint32_t __get_FRM(void)
-{
-  uint32_t result;
-
-  __ASM volatile ( "csrr %0," "frm" : "=r" (result) );
-  return (result);
-}
-
-/*********************************************************************
- * @fn      __set_FRM
- *
- * @brief   Set the Floating-Point Dynamic Rounding Mode
- *
- * @param   value  - set frm value
- *
- * @return  none
- */
-void __set_FRM(uint32_t value)
-{
-  __ASM volatile ("csrw frm, %0" : : "r" (value) );
-}
-
-/*********************************************************************
- * @fn      __get_FCSR
- *
- * @brief   Return the Floating-Point Control and Status Register
- *
- * @return  fcsr value
- */
-uint32_t __get_FCSR(void)
-{
-  uint32_t result;
-
-  __ASM volatile ( "csrr %0," "fcsr" : "=r" (result) );
-  return (result);
-}
-
-/*********************************************************************
- * @fn      __set_FCSR
- *
- * @brief   Set the Floating-Point Dynamic Rounding Mode
- *
- * @param   value  - set fcsr value
- *
- * @return  none
- */
-void __set_FCSR(uint32_t value)
-{
-  __ASM volatile ("csrw fcsr, %0" : : "r" (value) );
-}
 
 /*********************************************************************
  * @fn      __get_MSTATUS

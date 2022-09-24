@@ -1,6 +1,6 @@
-# CH32V307-TinyMaix
+# CH32V203-TinyMaix
 
-## Port TinyMaix to CH32V307
+## Port TinyMaix to CH32V203
 
 https://github.com/sipeed/TinyMaix
 
@@ -8,14 +8,16 @@ https://github.com/sipeed/TinyMaix
 
 |Item |Parameter|
 |--   |--|
-|Chip |CH32V307|
+|Chip |CH32V203|
 |Arch |RISCV32 IMAC|
 |Freq |144M |
-|Flash|480KB|
-|RAM  |128KB|
+|Flash|32KB |
+|RAM  |10KB |
 
 ## Board
-CH32V307V-R0-1v0
+[FlappyBoard Rev A.3](https://github.com/metro94/FlappyBoard)
+
+> Note: Debug UART outputs to PA9.
 
 ## Development Environment
 riscv-none-embed-gcc
@@ -25,7 +27,5 @@ Just simple edit `tm_port.h`
 
 ## Result
 |config  |mnist|cifar|mbnet96|mbnet128|Note|
-|---     |---  |---  |---    |---     |---|
-|O0 CPU  |1.23    |75.77  |*    | *        ||
-|O1 CPU  |1.14    |63.78  |*    |*     ||
-
+|---     |---  |---  |---    |---     |--- |
+|Os CPU  |2.51 |*    |*      | *      |    |

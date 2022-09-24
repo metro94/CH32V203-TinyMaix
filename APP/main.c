@@ -3,12 +3,10 @@
 
 
 #define TEST_MNIST (1)
-// #define TEST_CIFAR (1)
-// #define TEST_VWW (1)
 
 #if TEST_MNIST
 #include "mnist_valid_q.h"
-uint8_t pic[28*28]={
+const uint8_t pic[28*28]={
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -41,46 +39,33 @@ uint8_t pic[28*28]={
 #define IMG_L 28
 #define IMG_CH 1
 #define CLASS_NUM (10)
-char* labels[CLASS_NUM] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-
-#elif TEST_CIFAR
-#include "cifar10_q.h"
-#include "pic/pic2.h"
-#define IMG_L 32
-#define IMG_CH 3
-#define CLASS_NUM 10
-char* labels[CLASS_NUM] = {"airplane", "automobile", "bird", "cat", "deer", "dog", "frog", "hrose", "ship", "truck"};
-
-#elif TEST_VWW
-#include "vww96_q.h"
-#include "pic/pic_person1.h"
-#define IMG_L 96
-#define IMG_CH 3
-#define CLASS_NUM 2
-char* labels[CLASS_NUM] = {"no-person", "person"};
+const char* labels[CLASS_NUM] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 #endif
 
-volatile uint32_t g_us_tick;
-void TIM6_Init(void)  // 1us
+volatile uint32_t g_us_tick = 0;
+void TIM4_Init(void)  // 1us
 {
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure = {0};
 
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
 
-    TIM_TimeBaseStructure.TIM_Period = 1;
+    TIM_TimeBaseStructure.TIM_Period = 0xFFFF;
     TIM_TimeBaseStructure.TIM_Prescaler = 144 - 1;
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-    TIM_TimeBaseInit(TIM6, &TIM_TimeBaseStructure);
-    TIM_ITConfig(TIM6, TIM_IT_Update, ENABLE);
-    TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
-    TIM_Cmd(TIM6, ENABLE);
-    NVIC_SetPriority(TIM6_IRQn, 0x80);
-    NVIC_EnableIRQ(TIM6_IRQn);
+    TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+    TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);
+    TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+    TIM_Cmd(TIM4, ENABLE);
+    NVIC_SetPriority(TIM4_IRQn, 0x80);
+    NVIC_EnableIRQ(TIM4_IRQn);
 }
 
-
+uint32_t TIM4_GetUs(void)
+{
+    return g_us_tick + TIM_GetCounter(TIM4);
+}
 
 static tm_err_t layer_cb(tm_mdl_t* mdl, tml_head_t* lh)
 {   //dump middle result
@@ -135,7 +120,7 @@ int main(void) {
     printf("SystemClk:%ld\r\n", SystemCoreClock);
 
     // init us tick
-    TIM6_Init();
+    TIM4_Init();
 
     // Begin TinyMaix
     TM_DBGT_INIT();
@@ -179,4 +164,3 @@ end:
     {
     }
 }
-

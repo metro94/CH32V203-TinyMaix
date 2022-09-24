@@ -26,11 +26,11 @@ limitations under the License.
 
 /******************************* PORT CONFIG  ************************************/
 #define TM_ARCH         TM_ARCH_CPU
-#define TM_OPT_LEVEL    TM_OPT1
+#define TM_OPT_LEVEL    TM_OPT0
 #define TM_MDL_TYPE     TM_MDL_INT8
 #define TM_FASTSCALE    (1)         //enable if your chip don't have FPU, may speed up 1/3, but decrease accuracy
 #define TM_ENABLE_STAT  (1)         //enable mdl stat functions
-#define TM_MAX_CSIZE    (1000)      //max channel num //used if INT8 mdl  //cost TM_MAX_CSIZE*4 Byte
+#define TM_MAX_CSIZE    (256)       //max channel num //used if INT8 mdl  //cost TM_MAX_CSIZE*4 Byte
 #define TM_MAX_KSIZE    (5*5)       //max kernel_size   //cost TM_MAX_KSIZE*4 Byte
 #define TM_MAX_KCSIZE   (3*3*256)   //max kernel_size*channels //cost TM_MAX_KSIZE*sizeof(mtype_t) Byte
 
@@ -40,13 +40,13 @@ limitations under the License.
 
 
 #define TM_PRINTF(...) printf(__VA_ARGS__)
-#define TM_DBG(...)    TM_PRINTF("###L%d: ",__LINE__);TM_PRINTF(__VA_ARGS__);
-#define TM_DBGL()      TM_PRINTF("###L%d\n",__LINE__);
+#define TM_DBG(...)
+#define TM_DBGL()
 
 /******************************* DBG TIME CONFIG  ************************************/
 
-extern volatile uint32_t g_us_tick;
-#define  TM_GET_US()       ((uint32_t)g_us_tick)
+extern uint32_t TIM4_GetUs(void);
+#define  TM_GET_US()       (TIM4_GetUs())
 
 #define TM_DBGT_INIT()     uint32_t _start,_finish;float _time;_start=TM_GET_US();
 #define TM_DBGT_START()    _start=TM_GET_US();
